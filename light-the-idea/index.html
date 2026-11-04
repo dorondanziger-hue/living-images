@@ -477,11 +477,16 @@ svg#art{width:min(860px,100%);height:auto;display:block;touch-action:none;user-s
     if(f<=0){ linkPath.style.display='none'; return; }
     const sr=stageEl.getBoundingClientRect(), dr=document.querySelector('.gdot').getBoundingClientRect();
     const sx=dr.right+3-sr.left, sy=dr.top+dr.height*.72-sr.top;
-    const M=svg.getScreenCTM(); let best=null, bd=1e18;
+    // only join the trail above the word Grow, so the line never runs across it
+    const gr=document.querySelector('.gdot').parentNode.getBoundingClientRect(), clearY=gr.top-sr.top-12;
+    const M=svg.getScreenCTM(); let best=null, bd=1e18, any=null, ad=1e18;
     for(const q of L.trailPts){
       const X=M.a*q.x+M.c*q.y+M.e-sr.left, Y=M.b*q.x+M.d*q.y+M.f-sr.top;
-      const d=(X-sx)**2+(Y-sy)**2; if(d<bd){bd=d; best={x:X,y:Y};}
+      const d=(X-sx)**2+(Y-sy)**2;
+      if(Y<clearY && d<bd){bd=d; best={x:X,y:Y};}
+      if(d<ad){ad=d; any={x:X,y:Y};}
     }
+    if(!best) best=any;
     // Grow sits on the top step: a short step right from its full stop, straight up to the trail's height, then across to it
     const up=sx+14;
     let pts=[[sx,sy],[up,sy],[up,best.y],[best.x,best.y]];
@@ -532,6 +537,8 @@ svg#art{width:min(860px,100%);height:auto;display:block;touch-action:none;user-s
       const n={right:[1,0],left:[-1,0],top:[0,-1],bottom:[0,1]}[pr.side];
       const resisted=pr.d*RESIST;
       sp={x:raw.x-n[0]*(pr.d-resisted), y:raw.y-n[1]*(pr.d-resisted)};
+      // keep the spark beside the wall it is pushing, so the escape starts at the box and not far below it
+      if(n[0]) sp.y=Math.max(L.boxT+10,Math.min(L.boxB-10,sp.y)); else sp.x=Math.max(L.boxL+10,Math.min(L.boxR-10,sp.x));
       side=pr.side; bulge=resisted;
       if(pr.d>BREAK){ spark.classList.remove('dragging'); escape(sp); }
     } else { sp=raw; side=null; bulge=0; }
