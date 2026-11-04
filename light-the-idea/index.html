@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Light the Idea</title>
+<meta name="description" content="An interactive thought by Doron Danziger. Pull the spark out of the comfort zone and light the idea.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Light the Idea – an interactive thought">
+<meta property="og:description" content="Can you pull the spark out of the comfort zone? Takes 10 seconds.">
+<meta property="og:image" content="https://dorondanziger-hue.github.io/living-images/light-the-idea/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:url" content="https://dorondanziger-hue.github.io/living-images/light-the-idea/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="author" content="Doron Danziger">
+<style>
+html{color-scheme:light}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px system-ui,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Kalam:wght@300;400&family=Fraunces:ital,opsz,wght@1,9..144,300&display=swap">
+<style>
+/* Layout: the sentence sits inside a dashed "comfort zone" box; the bulb waits outside it. The visitor pulls the spark through the wall. */
+:root{
+  --sky-top:#D7EAF8; --sky-bottom:#A9CFEE;
+  --ink:#14284A; --blue:#1A4F8C; --blue-soft:#5C88BC;
+  --gold:#C9961E; --gold-hi:#F0C450; --paper:#FFFFFF;
+  --f-display:"Inter","Segoe UI",system-ui,sans-serif;
+  --f-accent:"Fraunces",Georgia,serif;
+  --f-hand:"Kalam","Segoe Print","Comic Sans MS",cursive;
+  color-scheme: light;
+}
+html,body{height:100%;}
+body{background:var(--sky-bottom);color:var(--ink);font-family:var(--f-display);}
+.stage{min-height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.6vh,24px);
+  padding-block:28px calc(24px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:
+   linear-gradient(135deg,transparent 46%,rgba(255,255,255,.16) 46%,rgba(255,255,255,.16) 54%,transparent 54%) 0 0/560px 560px,
+   linear-gradient(100deg,var(--sky-top) 0%,#B9D9F2 50%,var(--sky-bottom) 100%);}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-soft);font-weight:500;}
+svg#art{width:min(860px,100%);height:auto;display:block;touch-action:none;user-select:none;-webkit-user-select:none;overflow:visible;}
+.line{font-family:var(--f-hand);font-size:64px;fill:var(--ink);font-weight:300;}
+.k{font-weight:400;fill:var(--blue);}
+.sm{font-size:44px;}
+.zone{font-family:var(--f-display);font-size:13px;letter-spacing:.2em;fill:var(--blue-soft);font-weight:500;}
+#spark{cursor:grab;outline:none;}
+#spark.dragging{cursor:grabbing;}
+#spark:focus-visible .ring{stroke:var(--ink);stroke-width:3;}
+.msg{min-height:4.6em;text-align:center;width:min(900px,100%);max-width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.hint{font-size:19px;color:var(--blue);}
+.reveal{font-family:var(--f-hand);font-style:normal;font-weight:300;font-size:clamp(24px,3.5vw,34px);color:var(--blue);line-height:1.35;text-wrap:balance;}
+.reveal > span{display:inline-block;opacity:0;transform:translateY(8px);animation:rise .6s ease forwards;}
+.reveal > span:nth-child(1){animation-delay:.5s}
+.reveal > span:nth-child(2){animation-delay:1.1s}
+.reveal > span:nth-child(3){animation-delay:1.7s}
+.reveal > span:nth-child(4){animation-delay:2.3s}
+.reveal > span:nth-child(5){animation-delay:3s}
+.reveal .grow{display:block;width:fit-content;margin:10px auto 0;}
+.link{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
+.reveal .grow{color:var(--gold);font-style:normal;font-family:var(--f-hand);font-weight:400;text-decoration:underline;text-decoration-color:currentColor;text-decoration-thickness:2px;text-underline-offset:6px;}
+@keyframes rise{to{opacity:1;transform:none}}
+.again{font:inherit;font-size:14px;font-weight:500;background:var(--paper);color:var(--blue);border:1px solid rgba(26,79,140,.25);
+  border-radius:999px;padding:8px 18px;cursor:pointer;}
+.again:hover{background:var(--blue);color:var(--paper);}
+.again{display:inline-flex;align-items:center;gap:6px;}
+.again .mini{width:14px;height:19px;flex:none;}
+.again:focus-visible{outline:3px solid var(--gold-hi);outline-offset:2px;}
+.credit{font-size:12px;color:var(--blue);opacity:.8;}
+@media (prefers-reduced-motion:reduce){.reveal > span{animation:none;opacity:1;transform:none}}
+.stage{position:relative;}
+</style>
+
+<main class="stage">
+  <div class="eyebrow">An interactive thought</div>
+  <svg id="art" viewBox="0 0 900 400" role="img" aria-labelledby="artTitle">
+    <title id="artTitle">Growth Begins with Curiosity, written inside a box. Pull the spark out of the box to light the bulb outside it.</title>
+    <defs>
+      <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#F7D774" stop-opacity=".95"/>
+        <stop offset="1" stop-color="#F7D774" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="sparkGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#F0C450" stop-opacity=".85"/>
+        <stop offset="1" stop-color="#F0C450" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <g id="box"></g>
+    <text class="zone" id="zone" display="none"></text>
+    <text class="line" id="l1"><tspan class="k">Growth</tspan> <tspan class="sm">begins</tspan></text>
+    <text class="line" id="l2"><tspan class="sm">with</tspan> <tspan class="k">Curiosity.</tspan></text>
+    <g id="glyphs" aria-hidden="true"></g>
+    <g id="lines"></g>
+    <g id="bulb"></g>
+    <g id="burst"></g>
+    <g id="spark" tabindex="0" role="button" aria-label="Spark. Drag it out of the box, or press Enter to send it out.">
+      <circle r="34" fill="url(#sparkGlow)"/>
+      <circle class="ring" r="15" fill="none" stroke="#C9961E" stroke-width="2" opacity=".6"/>
+      <circle r="8" fill="#C9961E"/>
+    </g>
+  </svg>
+  <div class="msg" aria-live="polite">
+    <div class="hint" id="hint">Pull the spark out of the box <span aria-hidden="true">→</span></div>
+    <div class="reveal" id="reveal" hidden><svg id="stairs" role="img" aria-label="Stay curious. Ask questions. Explore possibilities. Take action. Grow." style="display:block;margin:0 auto;overflow:visible"></svg></div>
+    <button class="again" id="again" type="button" hidden aria-label="Light the bulb again">Light the <svg class="mini" viewBox="0 0 24 32" aria-hidden="true"><path d="M8 22 C8 19 3 16 3 10.5 A9 9 0 1 1 21 10.5 C21 16 16 19 16 22 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><rect x="8" y="23" width="8" height="4.5" rx="1.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 30 H14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M10 22 V15 l1-2.5 1 2.5 1-2.5 1 2.5 V22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg> again</button>
+  </div>
+  <svg class="link" id="link" aria-hidden="true"><path fill="none" stroke="rgb(215,165,46)" stroke-linecap="round" stroke-linejoin="round" style="display:none"/></svg>
+</main>
+
+<script>
+(() => {
+  const NS='http://www.w3.org/2000/svg';
+  const $=id=>document.getElementById(id);
+  const svg=$('art'), l1=$('l1'), l2=$('l2'), zone=$('zone');
+  const boxG=$('box'), linesG=$('lines'), bulbG=$('bulb'), burstG=$('burst'), spark=$('spark');
+  const hint=$('hint'), reveal=$('reveal'), again=$('again');
+  const ring=spark.querySelector('.ring');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const BLUE=[26,79,140], SOFT=[92,136,188], GOLD=[201,150,30], HI=[240,196,80];
+  const mix=(a,b,f)=>'rgb('+a.map((v,i)=>Math.round(v+(b[i]-v)*f)).join(',')+')';
+  const cl=x=>Math.max(0,Math.min(1,x)), ease=x=>{x=cl(x);return x*x*(3-2*x);};
+  const easeOut=x=>1-Math.pow(1-cl(x),3);
+  const mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;};
+
+  // geometry, set in build()
+  let L={};
+  // state
+  let phase='intro';            // intro | ready | drag | spring | escape | lit
+  let sp={x:0,y:0}, raw={x:0,y:0}, springFrom=null, springAt=0;
+  let side=null, bulge=0, snap=null, snapAt=0, litAt=0, introStart=0;
+  const BREAK=95, RESIST=.55;
+  let spotIdx=0;
+
+  function build(){
+    [boxG,linesG,bulbG,burstG].forEach(g=>g.innerHTML='');
+    const lh=78, pad=44;
+    l1.setAttribute('x',0); l1.setAttribute('y',0); l2.setAttribute('x',0); l2.setAttribute('y',lh);
+    const w=Math.max(l1.getComputedTextLength(), l2.getComputedTextLength());
+    const str=l2.textContent, di=str.lastIndexOf('.'), ci=str.indexOf('Curiosity');
+    const cS=l2.getStartPositionOfChar(ci).x, cE=l2.getEndPositionOfChar(di).x;
+    const boxL=-pad, boxR=w+pad+30, boxT=-64-pad+8, boxB=lh+26+pad-6;
+    L={boxL,boxR,boxT,boxB,r:18,lh};
+    zone.setAttribute('x',boxL+18); zone.setAttribute('y',boxT-12);
+    // underline under Curiosity, the spark rests at its end
+    const yU=lh+24;
+    L.ul=mk('path',{d:`M${cS} ${yU} L${cE-2} ${yU}`,fill:'none',stroke:mix(BLUE,BLUE,0),'stroke-width':4,'stroke-linecap':'round'},linesG);
+    // places inside the box where the spark can wait, clear of the words
+    L.spots=[
+      {x:cE+26,y:yU},
+      {x:boxR-28,y:boxT+28},
+      {x:boxL+26,y:boxT+26},
+      {x:boxL+26,y:boxB-24},
+      {x:boxR-30,y:-22},
+      {x:boxL+24,y:lh/2-18},
+      {x:(cS+boxL)/2+10,y:boxB-22},
+      {x:boxR-28,y:boxB-24}
+    ];
+    // and some among the words themselves
+    const s1=l1.textContent, gE=l1.getEndPositionOfChar(s1.indexOf('h')).x, bS=l1.getStartPositionOfChar(s1.indexOf('b')).x;
+    const bE=l1.getEndPositionOfChar(s1.length-1).x;
+    const wE=l2.getEndPositionOfChar(str.indexOf('h')).x;
+    L.spots.push(
+      {x:(gE+bS)/2, y:-24},
+      {x:(bS+bE)/2, y:-22},
+      {x:(wE+cS)/2, y:lh-24},
+      {x:(cS+cE)/2, y:lh-22},
+      {x:w*.32, y:16},
+      {x:w*.7, y:16}
+    );
+    L.rest=L.spots[Math.min(spotIdx,L.spots.length-1)];
+    // box outline
+    L.box=mk('path',{fill:'none',stroke:mix(SOFT,SOFT,0),'stroke-width':2.5,'stroke-dasharray':'10 8','stroke-linecap':'round'},boxG);
+    L.shards=[mk('path',{fill:'none',stroke:mix(SOFT,SOFT,0),'stroke-width':2.5,'stroke-dasharray':'10 8','stroke-linecap':'round'},boxG),
+              mk('path',{fill:'none',stroke:mix(SOFT,SOFT,0),'stroke-width':2.5,'stroke-dasharray':'10 8','stroke-linecap':'round'},boxG)];
+    // escape trail and bulb, outside the box
+    const bx=boxR+130, by=boxT+70, R=26;
+    L.bx=bx; L.by=by; L.R=R;
+    L.trail=mk('path',{fill:'none',stroke:mix(GOLD,HI,.35),'stroke-width':4.5,'stroke-linecap':'round'},linesG);
+    const w2=14, cyG=by-22-R+5, nx=w2+1, ny=by-20; L.cyG=cyG;
+    const B=mix(BLUE,BLUE,0);
+    L.glow=mk('circle',{cx:bx,cy:cyG,r:R*2.8,fill:'url(#glow)',opacity:0},bulbG);
+    L.parts=[];
+    L.parts.push(mk('path',{d:`M${bx-w2*.55} ${by} L${bx+w2*.55} ${by}`,stroke:B,'stroke-width':4,'stroke-linecap':'round'},bulbG));
+    L.parts.push(mk('rect',{x:bx-w2,y:by-20,width:w2*2,height:14,rx:3,fill:'none',stroke:B,'stroke-width':3.5},bulbG));
+    L.parts.push(mk('line',{x1:bx-w2,y1:by-13,x2:bx+w2,y2:by-13,stroke:B,'stroke-width':2.5},bulbG));
+    L.glass=mk('path',{d:`M${bx-nx} ${ny} C${bx-nx} ${ny-10} ${bx-R} ${cyG+R*.55} ${bx-R} ${cyG} A${R} ${R} 0 1 1 ${bx+R} ${cyG} C${bx+R} ${cyG+R*.55} ${bx+nx} ${ny-10} ${bx+nx} ${ny}`,
+      fill:'#FFFFFF','fill-opacity':.35,stroke:B,'stroke-width':4,'stroke-linejoin':'round'},bulbG);
+    L.parts.push(L.glass);
+    L.fil=mk('path',{d:`M${bx-6} ${ny} L${bx-6} ${cyG+6} M${bx+6} ${ny} L${bx+6} ${cyG+6} M${bx-6} ${cyG+6} l3 -7 l3 7 l3 -7 l3 7`,fill:'none',stroke:B,'stroke-width':2.5,'stroke-linecap':'round','stroke-linejoin':'round'},bulbG);
+    L.parts.push(L.fil);
+    L.rays=[-150,-120,-90,-60,-30].map(a=>{const t=a*Math.PI/180;return {e:mk('line',{stroke:B,'stroke-width':3.5,'stroke-linecap':'round'},bulbG),c:Math.cos(t),s:Math.sin(t)};});
+    // fit viewBox
+    const x0=boxL-48, y0=Math.min(boxT-48, cyG-R-40), x1=bx+R+60, y1=boxB+46;
+    svg.setAttribute('viewBox',`${x0.toFixed(0)} ${y0.toFixed(0)} ${(x1-x0).toFixed(0)} ${(y1-y0).toFixed(0)}`);
+    // the spark writes the sentence: Growth, Begins, with, Curiosity, each word from its first letter to its last
+    const gG=document.getElementById('glyphs'); gG.innerHTML='';
+    l1.style.opacity=0; l2.style.opacity=0;
+    const words=[[],[],[],[]];          // writing order: Growth, Begins, with, Curiosity
+    [[l1,0],[l2,1]].forEach(([el,li])=>{
+      const s=el.textContent;
+      for(let i=0;i<s.length;i++){
+        if(s[i]===' ') continue;
+        const p=el.getStartPositionOfChar(i), e2=el.getEndPositionOfChar(i);
+        let k,sm,w;
+        if(li===0){ k=i<6; sm=!k; w=k?0:1; } else { sm=i<ci; k=!sm; w=sm?2:3; }
+        const t=mk('text',{class:'line'+(k?' k':'')+(sm?' sm':''),x:0,y:0},gG); t.textContent=s[i];
+        words[w].push({e:t,k,fx:p.x,fy:p.y,ex:e2.x,size:sm?44:64});
+      }
+    });
+    L.glyphs=[]; let tt=.9;
+    words.forEach((wd,wi)=>{
+      if(wi) tt+=.35;
+      wd.forEach(g=>{ g.t=tt; L.glyphs.push(g); tt+=.09; });
+    });
+    const tL=tt;
+    L.ulLen=L.ul.getTotalLength();
+    // spark route while writing: it sits at the right edge of each new letter
+    L.write=L.glyphs.map(g=>({t:g.t, x:g.ex+4, y:g.fy-g.size*.34}));
+    const first=L.glyphs[0];
+    L.write.unshift({t:.5, x:first.fx-10, y:first.fy-first.size*.34});
+    L.ulStart=tL+.6; L.ulEnd=tL+1.45;
+    L.write.push({t:L.ulStart, x:cS, y:yU});
+    L.restX=cE+26;
+    L.introEnd=L.ulEnd+.15;
+    if(phase!=='lit'){ sp={...L.rest}; }
+  }
+
+  // box outline, with one side bent toward the spark like a rubber band
+  function boxPath(bendSide, P){
+    const {boxL:l,boxR:r,boxT:t,boxB:b,r:k}=L;
+    const seg=(name,ax,ay,bx,by)=>{
+      if(name!==bendSide||!P) return `L${bx} ${by}`;
+      const cx=2*P.x-(ax+bx)/2, cy=2*P.y-(ay+by)/2;
+      return `Q${cx.toFixed(1)} ${cy.toFixed(1)} ${bx} ${by}`;
+    };
+    return `M${l+k} ${t} ${seg('top',l+k,t,r-k,t)} Q${r} ${t} ${r} ${t+k} ${seg('right',r,t+k,r,b-k)} Q${r} ${b} ${r-k} ${b} ${seg('bottom',r-k,b,l+k,b)} Q${l} ${b} ${l} ${b-k} ${seg('left',l,b-k,l,t+k)} Q${l} ${t} ${l+k} ${t} Z`;
+  }
+  function sideEnds(name){
+    const {boxL:l,boxR:r,boxT:t,boxB:b,r:k}=L;
+    return {top:[[l+k,t],[r-k,t]],right:[[r,t+k],[r,b-k]],bottom:[[r-k,b],[l+k,b]],left:[[l,b-k],[l,t+k]]}[name];
+  }
+
+  // where the pointer is relative to the box: which wall it pushes, and how far
+  function pressure(p){
+    const {boxL:l,boxR:r,boxT:t,boxB:b}=L;
+    const d={right:p.x-r,left:l-p.x,top:t-p.y,bottom:p.y-b};
+    let best=null,bd=0; for(const k in d){ if(d[k]>bd){bd=d[k];best=k;} }
+    return {side:best,d:bd};
+  }
+
+  function trailPoint(f){
+    const p=L.trail.getPointAtLength(L.trailLen*cl(f)); return {x:p.x,y:p.y};
+  }
+
+  // the escape route: from the break, around the outside of the box, up into the bulb
+  function route(from, wall){
+    const {boxL:l,boxR:r,boxT:t,boxB:b,bx,by}=L, m=30;
+    const lane=r+52, under=by+48;
+    const end=[[lane,under],[bx,under],[bx,by]];
+    let pts;
+    if(wall==='right') pts=[[from.x,from.y],[Math.max(from.x,lane),from.y],...end];
+    else if(wall==='top') pts=[[from.x,from.y],[from.x,t-m],[lane,t-m],...end];
+    else if(wall==='bottom') pts=[[from.x,from.y],[from.x,b+m],[lane,b+m],...end];
+    else { // left: go around whichever corner is closer
+      const up = from.y < (t+b)/2, y = up ? t-m : b+m;
+      pts=[[from.x,from.y],[l-m,from.y],[l-m,y],[lane,y],...end];
+    }
+    // drop repeated points, then round every corner
+    pts=pts.filter((p,i)=>i===0||Math.hypot(p[0]-pts[i-1][0],p[1]-pts[i-1][1])>1);
+    let d=`M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+    for(let i=1;i<pts.length-1;i++){
+      const [ax,ay]=pts[i-1],[vx,vy]=pts[i],[cx,cy]=pts[i+1];
+      const l1=Math.hypot(vx-ax,vy-ay), l2=Math.hypot(cx-vx,cy-vy), rr=Math.min(26,l1/2,l2/2);
+      const p1=[vx+(ax-vx)*rr/l1, vy+(ay-vy)*rr/l1], p2=[vx+(cx-vx)*rr/l2, vy+(cy-vy)*rr/l2];
+      d+=` L${p1[0].toFixed(1)} ${p1[1].toFixed(1)} Q${vx} ${vy} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+    }
+    const z=pts[pts.length-1]; d+=` L${z[0]} ${z[1]}`;
+    return d;
+  }
+
+  function escape(p){
+    phase='escape'; snap={x:p.x,y:p.y}; snapAt=performance.now()/1000;
+    L.trail.setAttribute('d',route(snap, side||'right'));
+    L.trailLen=L.trail.getTotalLength();
+    L.trailPts=[]; for(let d=0; d<=L.trailLen; d+=4){ const q=L.trail.getPointAtLength(d); L.trailPts.push({x:q.x,y:q.y}); }
+    hint.hidden=true;
+  }
+  function light(now){
+    phase='lit'; litAt=now; burst();
+    reveal.hidden=false; again.hidden=false;
+    buildStairs();
+  }
+
+  // the closing line as a staircase: each phrase one step higher, Grow on the top step
+  const stairsSvg=document.getElementById('stairs'); let ST=null;
+  const PHR=[['Stay','curious.'],['Ask','questions.'],['Explore','possibilities.'],['Take','action.']];
+  function buildStairs(){
+    const sv=stairsSvg; sv.innerHTML='';
+    const W=Math.max(260, reveal.parentElement.clientWidth);
+    const tmp=mk('text',{'font-size':100},sv); tmp.style.fontFamily='var(--f-hand)';
+    const meas=(s,w=300)=>{tmp.style.fontWeight=w; tmp.textContent=s; return tmp.getComputedTextLength()/100;};
+    const one=PHR.map(p=>meas(p.join(' '))), two=PHR.map(p=>Math.max(meas(p[0]),meas(p[1])));
+    const gW=meas('Grow.',400)*1.1;
+    const units=ws=>ws.reduce((a,w)=>a+w+.7,0)+gW+.8;
+    // wide screens: one line per step; narrow screens: two lines per step so the type stays readable
+    let n=1, f=Math.min(28, (W-8)/units(one));
+    if(f<21){ n=2; f=Math.min(26, (W-8)/units(two)); }
+    tmp.remove();
+    const ws=(n===1?one:two).map(w=>w*f), pad=.35*f, lh=1.2*f, dy=n*lh+.45*f, gw=gW*f, gRise=1.1*f*1.1+.35*f;
+    const steps=[]; let x=3, y=0;
+    for(let i=0;i<4;i++){ steps.push({x,y,w:ws[i]}); x+=ws[i]+2*pad; y-=dy; }
+    const x4=x, y4=steps[3].y-gRise, top=y4-1.25*f, W2=x4+gw+2*pad+4, H2=-top+4;
+    sv.setAttribute('viewBox',`0 ${top.toFixed(1)} ${W2.toFixed(1)} ${H2.toFixed(1)}`);
+    sv.setAttribute('width',W2.toFixed(0)); sv.setAttribute('height',H2.toFixed(0));
+    let d=`M${steps[0].x} 0`; const groups=[];
+    steps.forEach((s,i)=>{ const xe=s.x+s.w+2*pad; d+=` H${xe.toFixed(1)}`; groups.push((i?dy:0)+s.w+2*pad); if(i<3) d+=` V${steps[i+1].y.toFixed(1)}`; });
+    d+=` V${y4.toFixed(1)}`; groups.push(gRise);
+    const path=mk('path',{d,fill:'none',stroke:'#1A4F8C','stroke-width':2.5,'stroke-linecap':'round','stroke-linejoin':'round'},sv);
+    const phr=steps.map((s,i)=>{
+      const g=mk('g',{},sv);
+      const lines=n===1?[PHR[i].join(' ')]:PHR[i];
+      lines.forEach((ln,k)=>{ const t=mk('text',{x:(s.x+pad).toFixed(1),y:(s.y-.32*f-(lines.length-1-k)*lh).toFixed(1),'font-size':f.toFixed(1),fill:'#1A4F8C'},g);
+        t.style.fontFamily='var(--f-hand)'; t.style.fontWeight=300; t.textContent=ln; });
+      return g;
+    });
+    const grow=mk('text',{x:(x4+pad).toFixed(1),y:(y4-.3*f).toFixed(1),'font-size':(1.1*f).toFixed(1),fill:'#C9961E'},sv);
+    grow.style.fontFamily='var(--f-hand)'; grow.style.fontWeight=400;
+    grow.appendChild(document.createTextNode('Grow'));
+    const dot=document.createElementNS(NS,'tspan'); dot.setAttribute('class','gdot'); dot.textContent='.'; grow.appendChild(dot);
+    const gline=mk('line',{x1:x4,y1:y4,x2:(x4+gw+2*pad).toFixed(1),y2:y4,stroke:'#C9961E','stroke-width':2.5,'stroke-linecap':'round'},sv);
+    ST={path,len:path.getTotalLength(),groups,phr,grow,gline,glen:gw+2*pad};
+  }
+  function paintStairs(now){
+    if(!ST||phase!=='lit') return;
+    const t=reduce?99:now-litAt, T=i=>.4+i*.7;
+    let drawn=0; ST.groups.forEach((g,i)=>{ drawn+=g*ease((t-T(i))/.55); });
+    ST.path.setAttribute('stroke-dasharray',`${drawn.toFixed(1)} ${ST.len+1}`);
+    ST.phr.forEach((g,i)=>{ const a=ease((t-T(i)-.2)/.4); g.style.opacity=a; g.setAttribute('transform',`translate(0 ${((1-a)*6).toFixed(1)})`); });
+    const a4=ease((t-T(4)-.35)/.4); ST.grow.style.opacity=a4;
+    const gf=ease((t-T(4)-.4)/.5);
+    ST.gline.setAttribute('stroke-dasharray',`${(ST.glen*gf).toFixed(1)} ${ST.glen+1}`);
+    ST.gline.style.opacity = gf>0 ? 1 : 0; ST.path.style.opacity = drawn>0 ? 1 : 0;
+  }
+  function reset(){
+    // each new round the spark waits somewhere else in the comfort zone
+    let n; do{ n=Math.floor(Math.random()*L.spots.length); }while(n===spotIdx && L.spots.length>1);
+    spotIdx=n; L.rest=L.spots[n];
+    phase='ready'; side=null; bulge=0; snap=null; sp={...L.rest};
+    burstG.innerHTML=''; particles=[];
+    hint.hidden=false; reveal.hidden=true; again.hidden=true;
+    spark.focus({preventScroll:true});
+  }
+  again.addEventListener('click',reset);
+
+  let particles=[];
+  function burst(){
+    burstG.innerHTML=''; particles=[];
+    if(reduce) return;
+    for(let i=0;i<28;i++){
+      const a=-Math.PI*(.02+.96*Math.random()), v=60+Math.random()*120;
+      particles.push({e:mk('circle',{r:(1.5+Math.random()*2.6).toFixed(1),fill:i%3?'#C9961E':'#F0C450'},burstG),
+        vx:Math.cos(a)*v, vy:Math.sin(a)*v, born:performance.now()/1000});
+    }
+  }
+
+  function paint(now){
+    // intro: the spark writes the sentence backwards, then draws the underline and settles
+    const it=reduce?99:now-introStart;
+    const INK=[20,40,74];
+    L.glyphs.forEach(g=>{
+      const a=ease((it-g.t)/.18);
+      const pop=1+.25*(1-easeOut((it-g.t)/.35));
+      g.e.setAttribute('transform',`translate(${g.fx.toFixed(1)} ${g.fy.toFixed(1)}) scale(${a>0?pop.toFixed(3):1})`);
+      g.e.style.opacity=a.toFixed(3);
+      g.e.style.fill=mix(GOLD,g.k?BLUE:INK,ease((it-g.t-.25)/.6));
+    });
+    // underline: drawn by the spark from left to right, gold at first, then blue
+    const ulF=easeOut((it-L.ulStart)/(L.ulEnd-L.ulStart));
+    L.ul.setAttribute('stroke-dasharray',`${(L.ulLen*ulF).toFixed(1)} ${L.ulLen+1}`);
+    L.ul.setAttribute('stroke',mix(GOLD,BLUE,ease((it-L.ulEnd)/.6)));
+    L.ul.style.opacity = ulF>0 ? 1 : 0;
+    if(phase==='intro'){
+      const W=L.write;
+      if(it<W[0].t){ sp={x:W[0].x,y:W[0].y}; }
+      else if(it>=L.ulStart){
+        const f=easeOut((it-L.ulStart)/(L.ulEnd-L.ulStart));
+        sp={x:W[W.length-1].x+(L.restX-W[W.length-1].x)*f, y:W[W.length-1].y};
+      } else {
+        let i=0; while(i<W.length-2 && it>=W[i+1].t) i++;
+        const A=W[i], B=W[i+1], f=ease((it-A.t)/Math.max(.05,Math.min(B.t-A.t,.5)));
+        const hop=Math.abs(B.y-A.y)>20 ? Math.sin(Math.PI*f)*-30 : 0;
+        sp={x:A.x+(B.x-A.x)*f, y:A.y+(B.y-A.y)*f+hop};
+      }
+      if(it>L.introEnd){ phase='ready'; sp={...L.rest}; }
+    }
+    spark.style.opacity = phase==='intro' ? ease((it-.3)/.4) : 1;
+
+    // box
+    let boxAlpha=1;
+    if(phase==='escape'||phase==='lit'){
+      const t=now-snapAt, k=easeOut(t/.45);
+      L.box.style.display='none';
+      // the bent wall snaps: two pieces whip back toward their corners
+      const [A,Bc]=sideEnds(side||'right');
+      const m=(e,f)=>({x:snap.x+(e[0]-snap.x)*f, y:snap.y+(e[1]-snap.y)*f});
+      const pa=m(A,.12+.6*k), pb=m(Bc,.12+.6*k);
+      L.shards[0].setAttribute('d',`M${A[0]} ${A[1]} L${pa.x.toFixed(1)} ${pa.y.toFixed(1)}`);
+      L.shards[1].setAttribute('d',`M${Bc[0]} ${Bc[1]} L${pb.x.toFixed(1)} ${pb.y.toFixed(1)}`);
+      L.shards.forEach(s=>{s.style.display='';s.style.opacity=(1-.4*k).toFixed(2);});
+      // the rest of the box stays, faded, as the place the idea came from
+      boxAlpha=1-.55*k;
+      L.boxRest=L.boxRest||mk('path',{fill:'none',stroke:mix(SOFT,SOFT,0),'stroke-width':2.5,'stroke-dasharray':'10 8','stroke-linecap':'round'},boxG);
+      L.boxRest.style.display='';
+      L.boxRest.setAttribute('d', openBoxPath(side||'right'));
+      L.boxRest.style.opacity=boxAlpha.toFixed(2);
+      zone.style.opacity=(.4+.6*(1-k)).toFixed(2);
+    } else {
+      L.box.style.display=''; L.shards.forEach(s=>s.style.display='none'); if(L.boxRest) L.boxRest.style.display='none';
+      L.box.setAttribute('d', boxPath(side, side?sp:null));
+      const strain=cl(bulge/ (BREAK*RESIST));
+      L.box.setAttribute('stroke', mix(SOFT,BLUE,strain));
+      L.box.setAttribute('stroke-width', (2.5+1.8*strain).toFixed(2));
+      zone.style.opacity=1;
+    }
+
+    // spark
+    if(phase==='spring'){
+      const f=easeOut((now-springAt)/.45);
+      sp={x:springFrom.x+(L.rest.x-springFrom.x)*f, y:springFrom.y+(L.rest.y-springFrom.y)*f};
+      const p=pressure(sp); side=p.d>0?p.side:null; bulge=Math.max(0,p.d);
+      if(f>=1){ phase='ready'; side=null; bulge=0; }
+    }
+    let trailF=0;
+    if(phase==='escape'){
+      trailF=ease((now-snapAt-.1)/(.5+L.trailLen/700));
+      const q=trailPoint(trailF); sp=q;
+      if(trailF>=1) light(now);
+    }
+    if(phase==='lit') trailF=1;
+    spark.setAttribute('transform',`translate(${sp.x.toFixed(1)} ${sp.y.toFixed(1)})`);
+    spark.style.display = phase==='lit' ? 'none' : '';
+    const k=(phase==='ready')?(Math.sin(now*3)+1)/2:0;
+    ring.setAttribute('r',(15+7*k).toFixed(1)); ring.setAttribute('opacity',(.7-.5*k).toFixed(2));
+
+    // gold trail from the break to the bulb
+    if(snap){ L.trail.style.display=''; L.trail.setAttribute('stroke-dasharray',`${(L.trailLen*trailF).toFixed(1)} ${L.trailLen+1}`); }
+    else L.trail.style.display='none';
+
+    // bulb
+    const ig=phase==='lit'?ease((now-litAt)/.5):0;
+    const flick=phase==='lit'&&now-litAt<.5?.8+.2*Math.sin(now*70):1;
+    const pulse=phase==='lit'?.5+.5*Math.sin((now-litAt)*4):0;
+    const col=mix(BLUE,GOLD,ig);
+    L.parts.forEach(e=>e.setAttribute('stroke',col));
+    L.fil.setAttribute('stroke',mix(BLUE,HI,ig));
+    L.glass.setAttribute('fill',mix([255,255,255],[255,236,170],ig));
+    L.glass.setAttribute('fill-opacity',(.35+.5*ig).toFixed(2));
+    L.glow.setAttribute('opacity',(ig*flick*(.75+.25*pulse)).toFixed(3));
+    L.rays.forEach(r=>{const r1=L.R+9, r2=L.R+20+ig*6+pulse*2*ig;
+      r.e.setAttribute('x1',L.bx+r1*r.c); r.e.setAttribute('y1',L.cyG+r1*r.s);
+      r.e.setAttribute('x2',L.bx+r2*r.c); r.e.setAttribute('y2',L.cyG+r2*r.s); r.e.setAttribute('stroke',col);});
+    particles.forEach(p=>{const t=now-p.born, x=L.bx+p.vx*t, y=L.cyG+p.vy*t+90*t*t;
+      p.e.setAttribute('cx',x.toFixed(1)); p.e.setAttribute('cy',y.toFixed(1)); p.e.setAttribute('opacity',Math.max(0,1-t/1.3).toFixed(2));});
+    paintStairs(now); drawLink(now);
+  }
+
+  // when Grow appears, a gold line runs from its full stop to the nearest point of the gold trail
+  const linkPath=document.querySelector('#link path'), stageEl=document.querySelector('.stage');
+  function drawLink(now){
+    const f = phase==='lit' && L.trailPts && ST ? ease((now-litAt-4.2)/.8) : 0;
+    if(f<=0){ linkPath.style.display='none'; return; }
+    const sr=stageEl.getBoundingClientRect(), dr=document.querySelector('.gdot').getBoundingClientRect();
+    const sx=dr.right+3-sr.left, sy=dr.top+dr.height*.72-sr.top;
+    const M=svg.getScreenCTM(); let best=null, bd=1e18;
+    for(const q of L.trailPts){
+      const X=M.a*q.x+M.c*q.y+M.e-sr.left, Y=M.b*q.x+M.d*q.y+M.f-sr.top;
+      const d=(X-sx)**2+(Y-sy)**2; if(d<bd){bd=d; best={x:X,y:Y};}
+    }
+    // Grow sits on the top step: a short step right from its full stop, straight up to the trail's height, then across to it
+    const up=sx+14;
+    let pts=[[sx,sy],[up,sy],[up,best.y],[best.x,best.y]];
+    pts=pts.filter((p,i)=>i===0||Math.hypot(p[0]-pts[i-1][0],p[1]-pts[i-1][1])>1);
+    let d=`M${sx.toFixed(1)} ${sy.toFixed(1)}`;
+    for(let i=1;i<pts.length-1;i++){
+      const [ax,ay]=pts[i-1],[vx,vy]=pts[i],[cx,cy]=pts[i+1];
+      const l1=Math.hypot(vx-ax,vy-ay), l2=Math.hypot(cx-vx,cy-vy), rr=Math.min(18,l1/2,l2/2);
+      d+=` L${(vx+(ax-vx)*rr/l1).toFixed(1)} ${(vy+(ay-vy)*rr/l1).toFixed(1)} Q${vx.toFixed(1)} ${vy.toFixed(1)} ${(vx+(cx-vx)*rr/l2).toFixed(1)} ${(vy+(cy-vy)*rr/l2).toFixed(1)}`;
+    }
+    const z=pts[pts.length-1]; d+=` L${z[0].toFixed(1)} ${z[1].toFixed(1)}`;
+    linkPath.setAttribute('d',d);
+    linkPath.style.display='';
+    linkPath.setAttribute('stroke-width',(4.5*M.a).toFixed(2));
+    const len=linkPath.getTotalLength();
+    linkPath.setAttribute('stroke-dasharray',`${(len*f).toFixed(1)} ${len+1}`);
+  }
+  function _unused(){
+  }
+
+  // the box with the broken wall left out
+  function openBoxPath(gone){
+    const {boxL:l,boxR:r,boxT:t,boxB:b,r:k}=L;
+    const order=['top','right','bottom','left'];
+    const segs={top:`L${r-k} ${t}`,right:`L${r} ${b-k}`,bottom:`L${l+k} ${b}`,left:`L${l} ${t+k}`};
+    const corners={top:`Q${r} ${t} ${r} ${t+k}`,right:`Q${r} ${b} ${r-k} ${b}`,bottom:`Q${l} ${b} ${l} ${b-k}`,left:`Q${l} ${t} ${l+k} ${t}`};
+    const startPts={top:[l+k,t],right:[r,t+k],bottom:[r-k,b],left:[l,b-k]};
+    let i=order.indexOf(gone), d='';
+    const nxt=order[(i+1)%4]; d+=`M${startPts[nxt][0]} ${startPts[nxt][1]}`;
+    for(let j=1;j<4;j++){ const s=order[(i+j)%4]; d+=` ${segs[s]}`; if(j<3) d+=` ${corners[s]}`; }
+    return d;
+  }
+
+  // pointer handling
+  function toSvg(e){const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse());}
+  let grabOff={x:0,y:0}, moved=0;
+  spark.addEventListener('pointerdown',e=>{
+    if(phase!=='ready'&&phase!=='spring') return;
+    phase='drag'; spark.classList.add('dragging'); spark.setPointerCapture(e.pointerId);
+    const p=toSvg(e); grabOff={x:sp.x-p.x,y:sp.y-p.y}; moved=0; e.preventDefault();
+  });
+  spark.addEventListener('pointermove',e=>{
+    if(phase!=='drag') return;
+    const p=toSvg(e); raw={x:p.x+grabOff.x,y:p.y+grabOff.y}; moved++;
+    const pr=pressure(raw);
+    if(pr.d>0){
+      // the wall resists: the spark only gets part of the way
+      const n={right:[1,0],left:[-1,0],top:[0,-1],bottom:[0,1]}[pr.side];
+      const resisted=pr.d*RESIST;
+      sp={x:raw.x-n[0]*(pr.d-resisted), y:raw.y-n[1]*(pr.d-resisted)};
+      side=pr.side; bulge=resisted;
+      if(pr.d>BREAK){ spark.classList.remove('dragging'); escape(sp); }
+    } else { sp=raw; side=null; bulge=0; }
+  });
+  const release=()=>{
+    spark.classList.remove('dragging');
+    if(phase==='drag'){
+      if(moved<3){ autoPull(); return; }
+      phase='spring'; springFrom={...sp}; springAt=performance.now()/1000;
+    }
+  };
+  spark.addEventListener('pointerup',release); spark.addEventListener('pointercancel',release);
+  spark.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&phase==='ready'){ e.preventDefault(); autoPull(); } });
+
+  // a tap or Enter pulls the spark out on its own
+  let auto=null;
+  function autoPull(){ phase='auto'; auto={from:{...L.rest},at:performance.now()/1000}; }
+  function stepAuto(now){
+    if(phase!=='auto') return;
+    const t=(now-auto.at)/1.1;
+    const target={x:L.boxR+BREAK+10, y:L.rest.y-18};
+    raw={x:auto.from.x+(target.x-auto.from.x)*ease(t), y:auto.from.y+(target.y-auto.from.y)*ease(t)};
+    const pr=pressure(raw);
+    if(pr.d>0){ const resisted=pr.d*RESIST; sp={x:raw.x-(pr.d-resisted),y:raw.y}; side='right'; bulge=resisted;
+      if(pr.d>BREAK){ escape(sp); return; } }
+    else { sp=raw; side=null; bulge=0; }
+  }
+
+  function frame(ms){ const now=ms/1000; stepAuto(now); paint(now); requestAnimationFrame(frame); }
+  function start(){ introStart=performance.now()/1000; build(); requestAnimationFrame(frame); }
+  // wait for the handwriting face so the letters are measured in the right font
+  const fontsReady = document.fonts && document.fonts.load
+    ? Promise.all([document.fonts.load('300 64px Kalam'), document.fonts.load('400 64px Kalam')]).catch(()=>{})
+    : Promise.resolve();
+  fontsReady.then(()=>document.fonts?document.fonts.ready:null).then(start);
+  let rT; addEventListener('resize',()=>{clearTimeout(rT); rT=setTimeout(()=>{ if(L.boxRest){L.boxRest.remove(); L.boxRest=null;} build(); if(phase==='lit') buildStairs(); },150);});
+})();
+</script>
+
+</body>
+</html>
